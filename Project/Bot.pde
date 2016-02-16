@@ -1,4 +1,6 @@
-class Bot
+//import Beacon.*;
+Beacon b();
+public class Bot
 {
   float x, y;
   float heading;
@@ -20,7 +22,7 @@ class Bot
   {
     
   }
-  void kNearestBeacon(float k)
+  void kNearestBeacon()
   {
     
   }

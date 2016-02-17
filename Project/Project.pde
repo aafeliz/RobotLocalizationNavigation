@@ -1,6 +1,6 @@
 // Beacon parameters
-final int winHeight = 400;
-final int winWidth = 400;
+final int winHeight = 800;
+final int winWidth = 800;
 final int numBeacons = 10;
 final int maxBeaconRange = int(winWidth/1.5);
 final int beaconRangeVar = 10;
@@ -17,7 +17,7 @@ Beacon[] be = new Beacon[numBeacons];
 Bot bot;
 void setup()
 {
-  size(400, 400);
+  size(800, 800);
   for(int i =0; i < be.length; i++)
   {
     be[i] = new Beacon(winWidth, winHeight, maxBeaconRange, beaconRangeVar);

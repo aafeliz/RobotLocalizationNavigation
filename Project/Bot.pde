@@ -8,6 +8,9 @@ class Bot
   float botHeight;
   int nearest1Indx;
   int nearest2Indx;
+  float easing;
+  float targetX, targetY;
+  float dx, dy;
   
   Bot(float xpos, float ypos, float headinginit, float scale, float _botWidth, float _botHeight)
   {
@@ -19,11 +22,17 @@ class Bot
     botHeight = _botHeight;
     nearest1Indx = -1;
     nearest2Indx = -1;
+    easing = 0.05;
+    
   }
   void move()
   {
-    
-    
+    targetX = mouseX;
+    targetY = mouseY;
+    dx = targetX - x;
+    dy = targetY - y;
+    x += dx*easing;
+    y += dy*easing;
   }
   void display()
   {

@@ -35,6 +35,7 @@ void draw()
     be[i].updateDistance(bot.x, bot.y);
     be[i].display();
   }*/
+  bot.move();
   bot.kNearestBeacon(be); //<>//
   bot.display();
   

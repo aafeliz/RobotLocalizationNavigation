@@ -36,25 +36,25 @@ class Bot
   }
   void kNearestBeacon(Beacon beacon[])
   {
-    nearest1Indx = -1; //<>//
+    nearest1Indx = -1; //<>// //<>//
     nearest2Indx = -1;
     for (int i = 0; i < beacon.length; i++)
     {
       beacon[i].updateDistance(x, y);
       beacon[i].display();
-      // check which are the two nearest neighbor //<>//
+      // check which are the two nearest neighbor //<>// //<>//
       //check if beacon can get distances
       if (beacon[i].detected)
       {
         if((nearest1Indx > -1) && (nearest2Indx > -1))
-        { //<>//
-          if(beacon[nearest1Indx].botNoiseDistance < beacon[nearest2Indx].botNoiseDistance) //<>//
-          { //<>//
-            if(beacon[i].botNoiseDistance < beacon[nearest2Indx].botNoiseDistance) //<>//
-            { //<>//
-              if(beacon[i].botNoiseDistance < beacon[nearest1Indx].botNoiseDistance) //<>//
-              { //<>//
-                nearest2Indx = nearest1Indx;  //<>//
+        { //<>// //<>//
+          if(beacon[nearest1Indx].botNoiseDistance < beacon[nearest2Indx].botNoiseDistance) //<>// //<>//
+          { //<>// //<>//
+            if(beacon[i].botNoiseDistance < beacon[nearest2Indx].botNoiseDistance) //<>// //<>//
+            { //<>// //<>//
+              if(beacon[i].botNoiseDistance < beacon[nearest1Indx].botNoiseDistance) //<>// //<>//
+              { //<>// //<>//
+                nearest2Indx = nearest1Indx;  //<>// //<>//
                 nearest1Indx = i;
               }
               else
@@ -80,18 +80,18 @@ class Bot
             }
           }
         }
-        else if(nearest1Indx == -1) //<>//
+        else if(nearest1Indx == -1) //<>// //<>//
         {
           nearest1Indx = i;
         }
-        else if(nearest2Indx == -1) //<>//
-        { //<>//
+        else if(nearest2Indx == -1) //<>// //<>//
+        { //<>// //<>//
           nearest2Indx = i;
         }
         
       }
     }
-    if((nearest1Indx != -1) && (nearest1Indx != -1))
+    if((nearest1Indx != -1) && (nearest2Indx != -1))
     {
       beacon[nearest1Indx].near = true;
       beacon[nearest2Indx].near = true;

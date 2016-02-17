@@ -26,8 +26,9 @@ class Bot
     fill(0,0,255);
     strokeWeight(3);
     stroke(155, 153);
+    //rotate(heading);
     rect(x, y, botWidth, botHeight); 
-    rotate(heading);
+    
   }
   void kNearestBeacon(Beacon beacon[])
   {

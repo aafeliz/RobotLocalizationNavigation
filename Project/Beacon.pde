@@ -7,7 +7,7 @@ class Beacon
   float rangeVar;
   Beacon(int winWidth, int winHeight, int _maxRange, int _rangeVar)
   {
-    detected = true;
+    detected = false;
     myX = random(0, winWidth);
     myY = random(0, winHeight);
     rangeVar = _rangeVar;
@@ -23,9 +23,20 @@ class Beacon
       ellipse(myX, myY, maxRange, maxRange);
     }
   }
-  
-  void updateDistance()
+  void updateDistance(float botx, float boty)
   {
     
+    float disX = myX - botx;
+    float disY = myY - boty;
+    botDistance = sqrt(sq(disX) + sq(disY));
+    if (botDistance < maxRange/2 ) 
+    {
+      detected = true;
+    } 
+    else 
+    {
+      detected = false;
+    }
   }
+   
 }

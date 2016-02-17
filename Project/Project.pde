@@ -2,12 +2,13 @@
 final int winHeight = 400;
 final int winWidth = 400;
 final int numBeacons = 10;
-final int maxBeaconRange = winWidth/2;
+final int maxBeaconRange = int(winWidth/1.5);
 final int beaconRangeVar = 10;
-//Bot parameters Bot(xpos, ypos, headinginit, scale, _botWidth, _botHeight)
+
+// Bot parameters 
 float botX = random(0, winWidth);
 float botY = random(0, winHeight);
-float headinginit = random(0, 2*PI);
+float headinginit = random(PI, TWO_PI);
 final float scale = winHeight * winWidth;// not sure what to use as scale
 final float _botWidth = scale/(winWidth*20);
 final float _botHeight = scale/(winHeight*20);
@@ -23,7 +24,7 @@ void setup()
     println("constructed a beacon");
   }
   bot = new Bot(botX, botY, headinginit, scale, _botWidth, _botHeight);
-  
+  println(headinginit);
 }
 
 void draw()
@@ -31,6 +32,7 @@ void draw()
   background(0);
   for(int i =0; i < be.length; i++)
   {
+    be[i].updateDistance(bot.x, bot.y);
     be[i].display(); //<>//
   }
   bot.display();

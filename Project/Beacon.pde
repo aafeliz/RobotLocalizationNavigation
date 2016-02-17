@@ -1,21 +1,34 @@
 class Beacon
 {
   boolean detected;
+  boolean near;
   float myX, myY;
-  float botDistance;
+  float botRealDistance;
   float maxRange;
   float rangeVar;
+  // attributes for filter
+  float botNoiseDistance;
+  
   Beacon(int winWidth, int winHeight, int _maxRange, int _rangeVar)
   {
     detected = false;
+    near = false;
     myX = random(0, winWidth);
     myY = random(0, winHeight);
     rangeVar = _rangeVar;
     maxRange = _maxRange + random(-rangeVar, rangeVar);
   }
+  
   void display()
   {
-    if (detected == true)
+    if((detected == true) && (near == true))
+    {
+      noFill();
+      strokeWeight(3);
+      stroke(204,102,0);
+      ellipse(myX, myY, maxRange, maxRange);
+    }
+    else if (detected == true)
     {
       noFill();
       strokeWeight(3);
@@ -23,20 +36,45 @@ class Beacon
       ellipse(myX, myY, maxRange, maxRange);
     }
   }
+  
   void updateDistance(float botx, float boty)
   {
     
     float disX = myX - botx;
     float disY = myY - boty;
-    botDistance = sqrt(sq(disX) + sq(disY));
-    if (botDistance < maxRange/2 ) 
+    botRealDistance = sqrt(sq(disX) + sq(disY));
+    updateNoiseDistance();
+    if(botRealDistance < maxRange/2)
     {
       detected = true;
+      near = false;
     } 
     else 
     {
       detected = false;
+      near = false;
     }
   }
-   
+  
+  void updateNoiseDistance()
+  {
+    float sd= map(botRealDistance, 0, maxRange, 0, 1); //the sigma changes linearly as a function of distance
+    botNoiseDistance = getRandomNormalDistributedValue(botRealDistance, sd);
+  }
+  
+  
 }
+float getRandomNormalDistributedValue(float mean, float sd) 
+{
+  float n = 0;
+  for (int i = 0; i < 10; i++)
+    n += random(-1.0, 1.0);
+  return mean + n * sd / 10;
+}
+ /*
+float normalDistribution(float num, float mu, float sd) 
+{
+  float e = 2.71828182845904523536; 
+  float ND  =  (1/sqrt(TWO_PI * sd ))*pow (e, (-(sq(num - mu))/(2*sq(sd ))));
+  return ND;
+}*/

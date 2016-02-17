@@ -18,7 +18,7 @@ class Beacon
     if (detected == true)
     {
       noFill();
-      strokeWeight(4);
+      strokeWeight(3);
       stroke(155, 153);
       ellipse(myX, myY, maxRange, maxRange);
     }

@@ -7,7 +7,7 @@ class Beacon
   float rangeVar;
   Beacon(int winWidth, int winHeight, int _maxRange, int _rangeVar)
   {
-    detected = false;
+    detected = true;
     myX = random(0, winWidth);
     myY = random(0, winHeight);
     rangeVar = _rangeVar;

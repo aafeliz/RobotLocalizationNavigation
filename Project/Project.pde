@@ -12,6 +12,8 @@ float headinginit = random(PI, TWO_PI);
 final float scale = winHeight * winWidth;// not sure what to use as scale
 final float _botWidth = scale/(winWidth*20);
 final float _botHeight = scale/(winHeight*20);
+final int numP = 100;
+final int pNumDelta = 20;
 
 Beacon[] be = new Beacon[numBeacons];
 Bot bot;
@@ -23,7 +25,7 @@ void setup()
     be[i] = new Beacon(winWidth, winHeight, maxBeaconRange, beaconRangeVar);
     println("constructed a beacon");
   }
-  bot = new Bot(botX, botY, headinginit, scale, _botWidth, _botHeight);
+  bot = new Bot(botX, botY, headinginit, scale, _botWidth, _botHeight, numP, pNumDelta);
   println(headinginit);
 }
 
@@ -36,8 +38,9 @@ void draw()
     be[i].display();
   }*/
   bot.move();
-  bot.kNearestBeacon(be); //<>//
-  bot.display();
+  bot.kNearestBeacon(be);
+  bot.getParticles(be); //<>//
+  bot.display(); //<>//
   
   
 }

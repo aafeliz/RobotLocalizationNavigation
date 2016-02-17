@@ -11,8 +11,11 @@ class Bot
   float easing;
   float targetX, targetY;
   float dx, dy;
+  Particle[] p;
+  int pNumDelta;//number of particles per step
+  int pIndx;
   
-  Bot(float xpos, float ypos, float headinginit, float scale, float _botWidth, float _botHeight)
+  Bot(float xpos, float ypos, float headinginit, float scale, float _botWidth, float _botHeight, int numP, int _pNumDelta)
   {
     x = xpos;
     y = ypos;
@@ -23,6 +26,13 @@ class Bot
     nearest1Indx = -1;
     nearest2Indx = -1;
     easing = 0.05;
+    p = new Particle[numP];
+    for(int i =0; i < p.length; i++)
+    { 
+      p[i] = new Particle();
+    }
+    pNumDelta = _pNumDelta;
+    pIndx = 0;
     
   }
   void move()
@@ -36,11 +46,13 @@ class Bot
   }
   void display()
   {
+    
     fill(0,0,255);
     strokeWeight(3);
     stroke(155, 153);
     //rotate(heading);
     rect(x, y, botWidth, botHeight); 
+    
     
   }
   void kNearestBeacon(Beacon beacon[])
@@ -108,13 +120,44 @@ class Bot
       beacon[nearest2Indx].display();
     }
   }
-  void getParticle()
+  void getParticles(Beacon beacon[])
   {
+    if ((nearest1Indx > -1)&&(nearest2Indx > -1))  //<>//
+    {
+      int i = pIndx; //<>//
+      while((i < (pIndx +pNumDelta)) && (i < p.length))
+      {
+        triangulate(beacon[nearest1Indx], beacon[nearest2Indx], i); //<>//
+        i++;
+      }
+      if (pIndx == p.length)
+      {
+        pIndx = 0;
+        getPFpos();
+        //might set show for all particles to false
+      }
+      for(int j = 0; j < pIndx; j++)
+      {
+        p[j].display(); //<>//
+        
+      }
+    }
     
+  }
+  void triangulate(Beacon be1, Beacon be2, int pIndx)
+  {
+    be1.updateNoiseDistance();
+    be2.updateNoiseDistance();
+    float px, py;
+    px = random(0,100); //<>//
+    py = random(0,100); //<>//
+    p[pIndx].x = px; //<>//
+    p[pIndx].y = py;
+    p[pIndx].show = true;
   }
   void getPFpos()
   {
-    
+    println("needs to be implemented");
   }
 }
     

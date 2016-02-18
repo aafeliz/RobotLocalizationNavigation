@@ -39,8 +39,8 @@ void draw()
   }*/
   bot.move();
   bot.kNearestBeacon(be);
-  bot.getParticles(be); //<>//
-  bot.display(); //<>//
+  bot.getParticles(be); //<>// //<>//
+  bot.display(); //<>// //<>//
   
   
 }

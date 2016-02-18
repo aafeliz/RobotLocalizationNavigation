@@ -31,7 +31,7 @@ void setup()
 
 void draw()
 {
-  background(0);
+  background(255);
   /*for(int i =0; i < be.length; i++)
   {
     be[i].updateDistance(bot.x, bot.y);

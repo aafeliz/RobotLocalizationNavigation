@@ -7,7 +7,7 @@ class Beacon
   float maxRange;
   float rangeVar;
   // attributes for filter
-  float botNoiseDistance;
+  float noiseDis;
   
   Beacon(int winWidth, int winHeight, int _maxRange, int _rangeVar)
   {
@@ -59,7 +59,7 @@ class Beacon
   void updateNoiseDistance()
   {
     float sd= map(botRealDistance, 0, maxRange, 0, 1); //the sigma changes linearly as a function of distance
-    botNoiseDistance = getRandomNormalDistributedValue(botRealDistance, sd);
+    noiseDis = getRandomNormalDistributedValue(botRealDistance, sd);
   }
   
   

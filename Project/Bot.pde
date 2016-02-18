@@ -146,10 +146,64 @@ class Bot
     }
     
   }
-  void triangulate(Beacon be1, Beacon be2, int pIndx)
+  void triangulate(Beacon beA, Beacon beB, int pIndx)
   {
-    be1.updateNoiseDistance();
-    be2.updateNoiseDistance();
+    beA.updateNoiseDistance();
+    beB.updateNoiseDistance();
+    float disX = be1.myX - be2.myX;
+    float disY = be2.myY - be2.myY;
+    float c = sqrt(sq(disX) + sq(disY));//disB1B2
+    float a = be1.botNoiseDistance;
+    float b = be2.botNoiseDistance;
+    p[pIndx].angMy = acos((sq(a) + sq(b) - sq(c))/(2*a*b));
+    p[pIndx].angA = acos((sq(b) + sq(c) - sq(a))/(2*b*c));
+    p[pIndx].angB = PI -   p[pIndx].angA - p[pIndx].angMy;
+    
+    if (beA.myX < beB.myX)
+    {
+      if(beA.myY > beB.myY)
+      {
+        
+      }
+      else if(beA.myY < beB.myY)
+      {
+        
+      }
+      else if(beA.myY == beB.myY)
+      {
+        
+      }
+    }
+    else if (beA.myX > beB.myX)
+    {
+      if(beA.myY > beB.myY)
+      {
+        
+      }
+      else if(beA.myY < beB.myY)
+      {
+        
+      }
+      else if(beA.myY == beB.myY)
+      {
+        
+      }
+    }
+    else if(beA.myX == beB.myX)
+    {
+      if(beA.myY > beB.myY)
+      {
+        
+      }
+      else if(beA.myY < beB.myY)
+      {
+        
+      }
+    }
+    
+    
+    
+    
     float px, py;
     px = random(0,100); //<>//
     py = random(0,100); //<>//

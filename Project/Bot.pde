@@ -150,19 +150,28 @@ class Bot
   {
     beA.updateNoiseDistance();
     beB.updateNoiseDistance();
-    float disX = be1.myX - be2.myX;
-    float disY = be2.myY - be2.myY;
+    p[pIndx].x = 0;
+    p[pIndx].y = 0;
+    float disX = beA.myX - beB.myX;
+    float disY = beA.myY - beB.myY;
     float c = sqrt(sq(disX) + sq(disY));//disB1B2
-    float a = be1.botNoiseDistance;
-    float b = be2.botNoiseDistance;
+    float a = beA.botNoiseDistance;
+    float b = beB.botNoiseDistance;
     p[pIndx].angMy = acos((sq(a) + sq(b) - sq(c))/(2*a*b));
     p[pIndx].angA = acos((sq(b) + sq(c) - sq(a))/(2*b*c));
     p[pIndx].angB = PI -   p[pIndx].angA - p[pIndx].angMy;
-    
+    //test for x
     if (beA.myX < beB.myX)
     {
+      //test for Y
       if(beA.myY > beB.myY)
       {
+        float la = beB.myX - beA.myX;
+        float lb = beA.myY - beB.myY;
+        float theta = acos((sq(c) + sq(la) - sq(lb))/(2*c*la));
+        float lambda = theta + p[pIndx].angA;
+        p[pIndx].x = (a*cos(lambda)) + beA.myX;
+        p[pIndx].y = beA.myY - (a*sin(lambda));
         
       }
       else if(beA.myY < beB.myY)
@@ -204,11 +213,11 @@ class Bot
     
     
     
-    float px, py;
-    px = random(0,100); //<>//
-    py = random(0,100); //<>//
-    p[pIndx].x = px; //<>//
-    p[pIndx].y = py; //<>//
+    //float px, py;
+    //px = random(0,100); //<>//
+    //py = random(0,100); //<>//
+    //p[pIndx].x = px; //<>//
+    //p[pIndx].y = py; //<>//
     p[pIndx].show = true; //<>//
   }
   void getPFpos()

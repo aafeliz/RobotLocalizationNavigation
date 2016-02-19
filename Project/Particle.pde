@@ -21,7 +21,7 @@ class Particle
   {
     if (show)
     {
-      fill(204,102,100);//0
+      fill(200,102,100);//0
       //strokeWeight(3);
       //stroke(155, 153);
       noStroke();

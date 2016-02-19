@@ -58,7 +58,7 @@ class Beacon
   
   void updateNoiseDistance()
   {
-    float sd= map(botRealDistance, 0, maxRange, 0, 100); //the sigma changes linearly as a function of distance
+    float sd= map(botRealDistance, 0, maxRange, 0, 10); //the sigma changes linearly as a function of distance
     noiseDis = getRandomNormalDistributedValue(botRealDistance, sd);
   }
   
@@ -67,9 +67,9 @@ class Beacon
 float getRandomNormalDistributedValue(float mean, float sd) 
 {
   float n = 0;
-  for (int i = 0; i < 10; i++)
+  for (int i = 0; i < 100; i++)
     n += random(-1.0, 1.0);
-  return mean + n * sd / 10;
+  return mean + n * sd / 6;
 }
  /*
 float normalDistribution(float num, float mu, float sd) 

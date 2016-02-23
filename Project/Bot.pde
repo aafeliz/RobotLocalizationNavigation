@@ -88,15 +88,15 @@ class Bot
     
   }
   void kNearestBeacon(Beacon be[])
-  { //<>//
-    near1Idx = -1; //<>// //<>// //<>//
+  { //<>// //<>//
+    near1Idx = -1; //<>// //<>// //<>// //<>//
     near2Idx = -1;
     near3Idx = -1;
     for (int i = 0; i < be.length; i++)
     {
       be[i].updateDistance(x, y);
-      be[i].display(); //<>//
-      // check which are the two nearest neighbor //<>// //<>// //<>//
+      be[i].display(); //<>// //<>//
+      // check which are the two nearest neighbor //<>// //<>// //<>// //<>//
       //check if beacon can get distances
       if (be[i].detected)
       {
@@ -177,9 +177,9 @@ class Bot
    * triagulates and displays the particles on the window
    */
   void getParticles(Beacon beacon[])
-  { //<>//
+  { //<>// //<>//
     //while?
-    if((near1Idx > -1) && (near2Idx > -1))  //<>// //<>//
+    if((near1Idx > -1) && (near2Idx > -1))  //<>// //<>// //<>//
     {
       int i = pIndx;
       while((i < (pIndx + pNumDelta)) && (i < p.length))
@@ -197,11 +197,11 @@ class Bot
       pIndx = i;
       if (pIndx == p.length)
       {
-        pIndx = 0; //<>//
-        getPFpos();  //<>//
+        pIndx = 0; //<>// //<>//
+        getPFpos();  //<>// //<>//
         //might set show for all particles to false
       }
-      //display used to be here //<>// //<>//
+      //display used to be here //<>// //<>// //<>//
     }
     
   }
@@ -337,6 +337,11 @@ class Bot
   }
 
   void getPFpos()
+  {
+    println("needs to be implemented");
+  }
+  
+  void getKFpos()
   {
     println("needs to be implemented");
   }

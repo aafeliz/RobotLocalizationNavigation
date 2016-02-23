@@ -14,7 +14,7 @@ final float scale = winHeight * winWidth;// not sure what to use as scale
 final float _botWidth = scale/(winWidth*20);
 final float _botHeight = scale/(winHeight*20);
 final int numP = 100;
-final int pNumDelta = 50;
+final int pNumDelta = 10;
 
 Beacon[] be = new Beacon[numBeacons];
 Bot bot;
@@ -41,19 +41,14 @@ void setup()
 void draw()
 {
   background(255);
-  /*for(int i =0; i < be.length; i++)
-  {
-    be[i].updateDistance(bot.x, bot.y);
-    be[i].display();
-  }*/
   bot.move();
   bot.kNearestBeacon(be);
-  bot.getParticles(be); //<>// //<>//
-  for(int j = 0; j < bot.pIndx; j++)
+  bot.getParticles(be); //<>//
+  for(int j = 0; j < bot.pIndx; j++) //<>//
   {
     bot.p[j].display(); 
   }
-  bot.display(); //<>// //<>//
+  bot.display(); //<>//
   
   
 }

@@ -44,7 +44,7 @@ class Bot
     intersectAB = new float[2][2];
     intersectBC = new float[2][2];
     intersectAC = new float[2][2];
-    wigRoom = 3;
+    wigRoom = 30;
     for(int i = 0; i < intersectAB.length; i++)
     {
       for(int j = 0; j < intersectAB[0].length; j++)
@@ -79,7 +79,7 @@ class Bot
   void display()
   {
     
-    fill(0,0,255);
+    fill(0,255,222);
     strokeWeight(3);
     stroke(155, 153);
     //rotate(heading);
@@ -211,9 +211,9 @@ class Bot
    */
   void triangulate(Beacon beA, Beacon beB, Beacon beC, int pIdx)
   {
-    //beA.updateNoiseDistance();
-    //beB.updateNoiseDistance();
-    //beC.updateNoiseDistance();
+    beA.updateNoiseDistance();
+    beB.updateNoiseDistance();
+    beC.updateNoiseDistance();
     if(isIntersect(beA.myX, beA.myY, beB.myX, beB.myY, (beA.noiseDis+wigRoom), (beB.noiseDis+wigRoom)))
     {
       CircleIntersects(beA.myX, beA.myY, beB.myX, beB.myY, (beA.noiseDis+wigRoom), (beB.noiseDis+wigRoom), 1);
@@ -227,7 +227,7 @@ class Bot
            float avgY = ((intersectAB[0][1] + intersectAB[1][1])+ (intersectBC[0][1] + intersectBC[1][1]) + (intersectAC[0][1] + intersectAC[1][1]))/6;
            p[pIdx].x = avgX;
            p[pIdx].y = avgY;
-           p[pIndx].show = true;
+           p[pIdx].show = true;
         }
       }
     }
@@ -241,8 +241,8 @@ class Bot
    */
   void triangulate(Beacon beA, Beacon beB, int pIdx)
   {
-    //beA.updateNoiseDistance();
-    //beB.updateNoiseDistance();
+    beA.updateNoiseDistance();
+    beB.updateNoiseDistance();
     if(isIntersect(beA.myX, beA.myY, beB.myX, beB.myY, (beA.noiseDis+wigRoom), (beB.noiseDis+wigRoom)))
     {
       CircleIntersects(beA.myX, beA.myY, beB.myX, beB.myY, (beA.noiseDis+wigRoom), (beB.noiseDis+wigRoom),1);
@@ -250,7 +250,7 @@ class Bot
       float avgY = ((intersectAB[0][1] + intersectAB[1][1])/2);
       p[pIdx].x = avgX;
       p[pIdx].y = avgY;
-      p[pIndx].show = true; 
+      p[pIdx].show = true; 
     }
   }
   /**

@@ -52,10 +52,10 @@ void draw()
   {
     bot.secs[j].display(); 
   }
-  bot.display(); //<>//
   bot.Pbot.display();
   bot.Kbot.display();
-  //sleep(1);
+  bot.display(); //<>//
+  
   
   
 }

@@ -1,24 +1,35 @@
 
 class Bot
 {
+  //bot attributes
   float x, y;
   float heading;
   float scalar;
   float botWidth;
   float botHeight;
-  int near1Idx;
-  int near2Idx;
-  int near3Idx;
-  float[][][] intersect;//ab = 0, bc = 1, ac = 2;
   float wigRoom;
   float easing;
   float targetX, targetY;
   float dx, dy;
+  
+  //beacons awareness
+  int near1Idx;
+  int near2Idx;
+  int near3Idx;
+  float[][][] intersect;//ab = 0, bc = 1, ac = 2;
+  
+  //estimated points
   Particle[] p;
   Intersects[] secs;
   int numP;
   int pNumDelta;//number of particles per step
   int pIndx;
+  
+  //estimated bots
+  EstBot Kbot;
+  EstBot Pbot;
+  float kfX, kfY;
+  float pfX, pfY;
   
   Bot(float xpos, float ypos, float headinginit, float scale, float _botWidth, float _botHeight, int _numP, int _pNumDelta)
   {
@@ -58,6 +69,9 @@ class Bot
     {
       secs[i] = new Intersects();
     }
+    Kbot = new EstBot("Kalman", x, y, botWidth, botHeight, heading);
+    Pbot = new EstBot("Particle", x, y, botWidth, botHeight, heading);
+    
   }
   void move()
   {
@@ -80,15 +94,15 @@ class Bot
     
   }
   void kNearestBeacon(Beacon be[])
-  { //<>// //<>//
-    near1Idx = -1; //<>// //<>// //<>// //<>//
+  { //<>//
+    near1Idx = -1; //<>// //<>// //<>//
     near2Idx = -1;
     near3Idx = -1;
     for (int i = 0; i < be.length; i++)
     {
       be[i].updateDistance(x, y);
-      be[i].display(); //<>// //<>//
-      // check which are the two nearest neighbor //<>// //<>// //<>// //<>//
+      be[i].display(); //<>//
+      // check which are the two nearest neighbor //<>// //<>// //<>//
       //check if beacon can get distances
       if (be[i].detected)
       {
@@ -169,9 +183,9 @@ class Bot
    * triagulates and displays the particles on the window
    */
   void getParticles(Beacon beacon[])
-  { //<>// //<>//
+  { 
     //while?
-    if((near1Idx > -1) && (near2Idx > -1))  //<>// //<>// //<>//
+    if((near1Idx > -1) && (near2Idx > -1))
     {
       int i = pIndx;
       while((i < (pIndx + pNumDelta)) && (i < p.length))
@@ -189,11 +203,12 @@ class Bot
       pIndx = i;
       if (pIndx == p.length)
       {
-        pIndx = 0; //<>// //<>//
-        getPFpos();  //<>// //<>//
+        pIndx = 0; 
+        getPFpos();   //<>//
+        getKFpos();
         //might set show for all particles to false
       }
-      //display used to be here //<>// //<>// //<>//
+      //display used to be here //<>// //<>//
     }
     
   }
@@ -423,11 +438,20 @@ class Bot
   void getPFpos()
   {
     println("needs to be implemented");
+    pfX = x + random(-20, 20);
+    pfY = y + random(-20, 20);
+    Pbot.move(pfX, pfY);
+    //Pbot.display();
+   
   }
   
   void getKFpos()
   {
     println("needs to be implemented");
+    kfX = x + random(-20, 20);
+    kfY = y + random(-20, 20);
+    Kbot.move(kfX, kfY);
+    //Kbot.display();
   }
 }
 

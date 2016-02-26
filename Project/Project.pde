@@ -1,7 +1,7 @@
 // Beacon parameters
 final int winHeight = 800;
 final int winWidth = 800;
-final int numBeacons = 15;
+final int numBeacons = 5;
 final int maxBeaconRange = int(winWidth/2);
 final float distBetBeacons = maxBeaconRange/(numBeacons/2);
 final int beaconRangeVar = 10;

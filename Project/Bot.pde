@@ -17,6 +17,7 @@ class Bot
   float targetX, targetY;
   float dx, dy;
   Particle[] p;
+  Intersects[] secs;
   int numP;
   int pNumDelta;//number of particles per step
   int pIndx;
@@ -65,6 +66,11 @@ class Bot
       {
         intersectAC[i][j] = 0;
       }
+    }
+    secs = new Intersects[6];
+    for(int i= 0; i < secs.length; i++)
+    {
+      secs[i] = new Intersects();
     }
   }
   void move()
@@ -228,12 +234,26 @@ class Bot
            p[pIdx].x = avgX;
            p[pIdx].y = avgY;
            p[pIdx].show = true;
+           
+           secs[0].x = intersectAB[0][0];
+           secs[1].x = intersectAB[1][0];
+           secs[2].x = intersectBC[0][0];
+           secs[3].x = intersectBC[1][0];
+           secs[4].x = intersectAC[0][0];
+           secs[5].x = intersectAC[1][0];
+           secs[0].y = intersectAB[0][1];
+           secs[1].y = intersectAB[1][1];
+           secs[2].y = intersectBC[0][1];
+           secs[3].y = intersectBC[1][1];
+           secs[4].y = intersectAC[0][1];
+           secs[5].y = intersectAC[1][1];
+           for(int i = 0; i < secs.length; i++)
+           {
+             secs[i].show = true;
+           }  
         }
       }
     }
-   
-    
-    
   }
   /*
    * Triangulates when two beacons are used
@@ -250,7 +270,17 @@ class Bot
       float avgY = ((intersectAB[0][1] + intersectAB[1][1])/2);
       p[pIdx].x = avgX;
       p[pIdx].y = avgY;
-      p[pIdx].show = true; 
+      p[pIdx].show = true;
+      secs[0].x = intersectAB[0][0];
+      secs[1].x = intersectAB[1][0];
+      secs[0].y = intersectAB[0][1];
+      secs[1].y = intersectAB[1][1];
+      secs[0].show = true;
+      secs[1].show = true;
+      for(int i = 2; i < secs.length; i++)
+      {
+        secs[i].show = false;
+      }
     }
   }
   /**
@@ -278,12 +308,31 @@ class Bot
      
     // Find the intersections (formula derivations not shown here).
     float t = sqrt( (d + r1 + r2) * (d + r1 - r2) * (d - r1 + r2) * (-d + r1 + r2) );
-   
-    float sx1 = 0.5 * (a + (a*(r1*r1 - r2*r2) + b*t)/ds);
-    float sx2 = 0.5 * (a + (a*(r1*r1 - r2*r2) - b*t)/ds);
+    float ratio;
+    float sx1;
+    float sx2;
+    float sy1;
+    float sy2;
+    if (r1 > r2)
+    {
+      ratio = 0.5;//(r2/r1*1)/2; 
+      sx1 = (ratio) * (a + (a*(r1*r1 - r2*r2) + b*t)/ds);//0.5 instead of ratio
+      sx2 =  (ratio) * (a + (a*(r1*r1 - r2*r2) - b*t)/ds);
      
-    float sy1 = 0.5 * (b + (b*(r1*r1 - r2*r2) - a*t)/ds);
-    float sy2 = 0.5 * (b + (b*(r1*r1 - r2*r2) + a*t)/ds);
+      sy1 = ratio * (b + (b*(r1*r1 - r2*r2) - a*t)/ds);
+      sy2 = ratio * (b + (b*(r1*r1 - r2*r2) + a*t)/ds);
+      
+    }
+    else
+    {
+      ratio = 0.5;//(r1/r2*1)/2;
+      sx1 = (ratio) * (a + (a*(r1*r1 - r2*r2) + b*t)/ds);//0.5 instead of ratio
+      sx2 = ratio * (a + (a*(r1*r1 - r2*r2) - b*t)/ds);
+     
+      sy1 = (1-ratio) * (b + (b*(r1*r1 - r2*r2) - a*t)/ds);
+      sy2 = ratio * (b + (b*(r1*r1 - r2*r2) + a*t)/ds);
+    }
+    
      
     // Translate to get the intersections in the original reference frame.
     sx1 += x1;

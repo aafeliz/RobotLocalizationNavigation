@@ -1,9 +1,9 @@
 // Beacon parameters
 final int winHeight = 800;
 final int winWidth = 800;
-final int numBeacons = 5;
+final int numBeacons = 20;
 final int maxBeaconRange = int(winWidth/2);
-final float distBetBeacons = maxBeaconRange/(numBeacons/2);
+final float distBetBeacons = maxBeaconRange/(numBeacons/1.5);
 final int beaconRangeVar = 10;
 
 // Bot parameters 
@@ -47,6 +47,10 @@ void draw()
   for(int j = 0; j < bot.pIndx; j++) //<>//
   {
     bot.p[j].display(); 
+  }
+  for(int j = 0; j < bot.secs.length; j++)
+  {
+    bot.secs[j].display(); 
   }
   bot.display(); //<>//
   

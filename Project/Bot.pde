@@ -9,9 +9,7 @@ class Bot
   int near1Idx;
   int near2Idx;
   int near3Idx;
-  float[][] intersectAB;
-  float[][] intersectBC;
-  float[][] intersectAC;
+  float[][][] intersect;//ab = 0, bc = 1, ac = 2;
   float wigRoom;
   float easing;
   float targetX, targetY;
@@ -42,31 +40,19 @@ class Bot
     }
     pNumDelta = _pNumDelta;
     pIndx = 0;
-    intersectAB = new float[2][2];
-    intersectBC = new float[2][2];
-    intersectAC = new float[2][2];
+    intersect = new float[3][2][2];
     wigRoom = 30;
-    for(int i = 0; i < intersectAB.length; i++)
+    for(int i = 0; i < intersect.length; i++)
     {
-      for(int j = 0; j < intersectAB[0].length; j++)
+      for(int j = 0; j < intersect[0].length; j++)
       {
-        intersectAB[i][j] = 0;
+        for(int k = 0; j < intersect[0][0].length; j++)
+        {
+          intersect[i][j][k] = 0;
+        }
       }
     }
-    for(int i = 0; i < intersectBC.length; i++)
-    {
-      for(int j = 0; j < intersectBC[0].length; j++)
-      {
-        intersectBC[i][j] = 0;
-      }
-    }
-    for(int i = 0; i < intersectAC.length; i++)
-    {
-      for(int j = 0; j < intersectAC[0].length; j++)
-      {
-        intersectAC[i][j] = 0;
-      }
-    }
+   
     secs = new Intersects[6];
     for(int i= 0; i < secs.length; i++)
     {
@@ -229,24 +215,68 @@ class Bot
         if(isIntersect(beA.myX, beA.myY, beC.myX, beC.myY, (beC.noiseDis+wigRoom), (beC.noiseDis+wigRoom)))
         {
            CircleIntersects(beA.myX, beA.myY, beC.myX, beC.myY, (beC.noiseDis+wigRoom), (beC.noiseDis+wigRoom), 3);
-           float avgX = ((intersectAB[0][0] + intersectAB[1][0])+ (intersectBC[0][0] + intersectBC[1][0]) + (intersectAC[0][0] + intersectAC[1][0]))/6;
-           float avgY = ((intersectAB[0][1] + intersectAB[1][1])+ (intersectBC[0][1] + intersectBC[1][1]) + (intersectAC[0][1] + intersectAC[1][1]))/6;
+           //ab = 0, bc = 1, ac = 2;
+           float a_BC1 = dist(beA.myX ,beA.myY,intersect[1][0][0], intersect[1][0][1]);//pr1
+           float a_BC2 = dist(beA.myX ,beA.myY,intersect[1][1][0], intersect[1][1][1]);//pr2
+           if(a_BC1 <= a_BC2)
+           {
+             secs[0].x = intersect[1][0][0];//0
+             secs[0].y = intersect[1][0][1];
+             secs[5].x = intersect[1][1][0];
+             secs[5].y = intersect[1][1][1];
+           }
+           else
+           {
+             secs[0].x = intersect[1][1][0];
+             secs[0].y = intersect[1][1][1];
+             secs[5].x = intersect[1][0][0];
+             secs[5].y = intersect[1][0][1];
+           }
+           secs[0].inner = true;
+           
+           float b_AC1= dist(beB.myX ,beB.myY,intersect[2][0][0], intersect[2][0][1]);
+           float b_AC2= dist(beB.myX ,beB.myY,intersect[2][1][0], intersect[2][1][1]);
+           if(b_AC1 <= b_AC2)
+           {
+             secs[1].x = intersect[2][0][0];
+             secs[1].y = intersect[2][0][1];
+             secs[4].x = intersect[2][1][0];
+             secs[4].y = intersect[2][1][1];
+           }
+           else
+           {
+             secs[1].x = intersect[2][1][0];
+             secs[1].y = intersect[2][1][1];
+             secs[4].x = intersect[2][0][0];
+             secs[4].y = intersect[2][0][1];
+           }
+           secs[1].inner = true;
+           
+           float c_AB1= dist(beC.myX ,beC.myY,intersect[0][0][0], intersect[0][0][1]);
+           float c_AB2= dist(beC.myX ,beC.myY,intersect[0][1][0], intersect[0][1][1]);
+           if(c_AB1 <= c_AB2)
+           {
+             secs[2].x = intersect[0][0][0];
+             secs[2].y = intersect[0][0][1];
+             secs[3].x = intersect[0][1][0];
+             secs[3].y = intersect[0][1][1];
+           }
+           else
+           {
+             secs[2].x = intersect[0][1][0];
+             secs[2].y = intersect[0][1][1];
+             secs[3].x = intersect[0][0][0];
+             secs[3].y = intersect[0][0][1];
+           }
+           secs[2].inner = true;
+           
+           
+           float avgX = (secs[0].x + secs[1].x + secs[2].x)/3;// this can improve
+           float avgY = (secs[0].y + secs[1].y + secs[2].y)/3;
            p[pIdx].x = avgX;
            p[pIdx].y = avgY;
            p[pIdx].show = true;
            
-           secs[0].x = intersectAB[0][0];
-           secs[1].x = intersectAB[1][0];
-           secs[2].x = intersectBC[0][0];
-           secs[3].x = intersectBC[1][0];
-           secs[4].x = intersectAC[0][0];
-           secs[5].x = intersectAC[1][0];
-           secs[0].y = intersectAB[0][1];
-           secs[1].y = intersectAB[1][1];
-           secs[2].y = intersectBC[0][1];
-           secs[3].y = intersectBC[1][1];
-           secs[4].y = intersectAC[0][1];
-           secs[5].y = intersectAC[1][1];
            for(int i = 0; i < secs.length; i++)
            {
              secs[i].show = true;
@@ -266,17 +296,22 @@ class Bot
     if(isIntersect(beA.myX, beA.myY, beB.myX, beB.myY, (beA.noiseDis+wigRoom), (beB.noiseDis+wigRoom)))
     {
       CircleIntersects(beA.myX, beA.myY, beB.myX, beB.myY, (beA.noiseDis+wigRoom), (beB.noiseDis+wigRoom),1);
-      float avgX = ((intersectAB[0][0] + intersectAB[1][0])/2);
-      float avgY = ((intersectAB[0][1] + intersectAB[1][1])/2);
+      //float a_BC1 = dist(beA.myX ,beA.myY,intersect[1][0][0], intersect[1][0][1]);//pr1// will use this as a ratio to determine x and y
+      //float a_BC2 = dist(beA.myX ,beA.myY,intersect[1][1][0], intersect[1][1][1]);//pr2
+      
+      float avgX = ((intersect[0][0][0] + intersect[0][1][0])/2);
+      float avgY = ((intersect[0][0][1] + intersect[0][1][1])/2);
       p[pIdx].x = avgX;
       p[pIdx].y = avgY;
       p[pIdx].show = true;
-      secs[0].x = intersectAB[0][0];
-      secs[1].x = intersectAB[1][0];
-      secs[0].y = intersectAB[0][1];
-      secs[1].y = intersectAB[1][1];
+      secs[0].x = intersect[0][0][0];
+      secs[1].x = intersect[0][1][0];
+      secs[0].y = intersect[0][0][1];
+      secs[1].y = intersect[0][1][1];
       secs[0].show = true;
       secs[1].show = true;
+      secs[0].inner = true;
+      secs[1].inner = true;
       for(int i = 2; i < secs.length; i++)
       {
         secs[i].show = false;
@@ -346,26 +381,26 @@ class Bot
     r[0][1] = sy1;
     r[1][0] = sx2;
     r[1][1] = sy2;*/
-    if(num == 1)
+    if(num == 1)//AB
     {
-      intersectAB[0][0] = sx1;
-      intersectAB[0][1] = sy1;
-      intersectAB[1][0] = sx2;
-      intersectAB[1][1] = sy2;
+      intersect[0][0][0] = sx1;
+      intersect[0][0][1] = sy1;
+      intersect[0][1][0] = sx2;
+      intersect[0][1][1] = sy2;
     }
-    else if(num == 2)
+    else if(num == 2)//BC
     {
-      intersectBC[0][0] = sx1;
-      intersectBC[0][1] = sy1;
-      intersectBC[1][0] = sx2;
-      intersectBC[1][1] = sy2;
+      intersect[1][0][0] = sx1;
+      intersect[1][0][1] = sy1;
+      intersect[1][1][0] = sx2;
+      intersect[1][1][1] = sy2;
     }
-    else if(num == 3)
+    else if(num == 3)//AC
     {
-      intersectAC[0][0] = sx1;
-      intersectAC[0][1] = sy1;
-      intersectAC[1][0] = sx2;
-      intersectAC[1][1] = sy2;
+      intersect[2][0][0] = sx1;
+      intersect[2][0][1] = sy1;
+      intersect[2][1][0] = sx2;
+      intersect[2][1][1] = sy2;
     }
   }
   /**

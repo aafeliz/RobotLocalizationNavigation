@@ -4,3 +4,5 @@ take a look at this source. It might help us figureout how to fix triangulation 
 http://www.telecom.ulg.ac.be/publi/publications/pierlot/Pierlot2011ANewThreeObject/index.html \n
 
 try out the new processing feature that allows you to play with parameter while running code!! Sketch -> Tweak \n
+
+My KF code can track displace of the robot which can be uniformly accelerated or with constant velocity.

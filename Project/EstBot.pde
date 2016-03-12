@@ -40,7 +40,7 @@ class EstBot
   {
     fill(R, G, B);
     strokeWeight(3);
-    stroke(155, 153);
+    stroke(R, G, B);
     //rotate(heading);
     rect(x, y, botWidth, botHeight); 
   }

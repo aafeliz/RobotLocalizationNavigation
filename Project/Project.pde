@@ -53,6 +53,6 @@ void draw()
     bot.secs[j].display(); 
   }
   bot.Pbot.display();
-  bot.Kbot.display();
+  //bot.Kbot.display();
   bot.display(); //<>//
 }

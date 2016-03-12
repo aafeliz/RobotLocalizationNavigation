@@ -204,7 +204,7 @@ class Bot
       if (pIndx == p.length)
       {
         pIndx = 0; 
-        getPFpos(beacon);   //<>//
+        getPFpos();   //<>//
         getKFpos();
         //might set show for all particles to false
       }
@@ -435,52 +435,44 @@ class Bot
     }
   }
 
-  void getPFpos(Beacon be[])
+  void getPFpos()
   {
-    println("needs to be implemented");
     float beX[] = {-1.00, -1.00, -1.00}; 
     float beY[] = {-1.00, -1.00, -1.00}; 
-    if((near1Idx > -1) && (near2Idx > -1) && (near3Idx > -1))
+    if((secs[2].inner == true) && (secs[1].inner == true) && (secs[0].inner == true))
     {
-      beX[0] = be[near1Idx].myX;
-      beX[1] = be[near2Idx].myX;
-      beX[2] = be[near3Idx].myX;
-      beY[0] = be[near1Idx].myY;
-      beY[1] = be[near2Idx].myY;
-      beY[2] = be[near3Idx].myY;
-      
+      beX[0] = secs[0].x;
+      beX[1] = secs[1].x;
+      beX[2] = secs[2].x;
+      beY[0] = secs[0].y;
+      beY[1] = secs[1].y;
+      beY[2] = secs[2].y;
     }
-    else if(near3Idx <= -1)
+    else if(secs[3].inner == true)
     {
-      beX[0] = be[near1Idx].myX;
-      beX[1] = be[near2Idx].myX;
-      beY[0] = be[near1Idx].myY;
-      beY[1] = be[near2Idx].myY;
+      beX[0] = secs[0].x;
+      beX[1] = secs[1].x;
+      beY[0] = secs[0].y;
+      beY[1] = secs[1].y;
     }
     float sigma = 0.1;
-    pfX = parzensWindow(p, sigma, beX); 
-    pfY = parzensWindow(p, sigma, beY); 
+    pfX = parzensWindow(p, sigma, beX) - (Pbot.botWidth*0.5); 
+    pfY = parzensWindow(p, sigma, beY) - (Pbot.botHeight*0.5); 
     Pbot.move(pfX, pfY);
     //Pbot.display();
    
   }
   float parzensWindow(Particle p[], float sigma, float beaconPos[])
   {
-    float min = beaconPos[0];
-    float max = beaconPos[0];
     // chosing values for range and position of window
-    for(int i=1; i < beaconPos.length; i++)
+    float min = min(beaconPos);
+    float max = max(beaconPos);
+    if(beaconPos[2] < 0)
     {
-        if(beaconPos[i] < min && beaconPos[i] > -1)
-        {
-          min = beaconPos[i];
-        }
-        else if(beaconPos[i] > max && beaconPos[i] > -1)
-        {
-           max = beaconPos[i]; 
-        }
-           
+      min = min(beaconPos[0], beaconPos[1]);
     }
+    
+    
     int windowSize = p.length*2;
     float valRange = max-min;
     float windowStepSize = valRange/windowSize;
@@ -494,7 +486,7 @@ class Bot
     particleWindow[0] = min;
     for(int i=1; i < windowSize; i++)
     {
-      particleWindow[i] = particleWindow[i-1]+windowStepSize; //i*windowStepSize + min;
+      particleWindow[i] = particleWindow[i-1]+windowStepSize; //i*windowStepSize + min; //
     }
     
     //Creating the density function

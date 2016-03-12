@@ -204,7 +204,7 @@ class Bot
       if (pIndx == p.length)
       {
         pIndx = 0; 
-        getPFpos();   //<>//
+        getPFpos(beacon);   //<>//
         getKFpos();
         //might set show for all particles to false
       }
@@ -435,14 +435,104 @@ class Bot
     }
   }
 
-  void getPFpos()
+  void getPFpos(Beacon be[])
   {
     println("needs to be implemented");
-    pfX = x + random(-20, 20);
-    pfY = y + random(-20, 20);
+    float beX[] = {-1.00, -1.00, -1.00}; 
+    float beY[] = {-1.00, -1.00, -1.00}; 
+    if((near1Idx > -1) && (near2Idx > -1) && (near3Idx > -1))
+    {
+      beX[0] = be[near1Idx].myX;
+      beX[1] = be[near2Idx].myX;
+      beX[2] = be[near3Idx].myX;
+      beY[0] = be[near1Idx].myY;
+      beY[1] = be[near2Idx].myY;
+      beY[2] = be[near3Idx].myY;
+      
+    }
+    else if(near3Idx <= -1)
+    {
+      beX[0] = be[near1Idx].myX;
+      beX[1] = be[near2Idx].myX;
+      beY[0] = be[near1Idx].myY;
+      beY[1] = be[near2Idx].myY;
+    }
+    float sigma = 0.1;
+    pfX = parzensWindow(p, sigma, beX); 
+    pfY = parzensWindow(p, sigma, beY); 
     Pbot.move(pfX, pfY);
     //Pbot.display();
    
+  }
+  float parzensWindow(Particle p[], float sigma, float beaconPos[])
+  {
+    float min = beaconPos[0];
+    float max = beaconPos[0];
+    // chosing values for range and position of window
+    for(int i=1; i < beaconPos.length; i++)
+    {
+        if(beaconPos[i] < min && beaconPos[i] > -1)
+        {
+          min = beaconPos[i];
+        }
+        else if(beaconPos[i] > max && beaconPos[i] > -1)
+        {
+           max = beaconPos[i]; 
+        }
+           
+    }
+    int windowSize = p.length*2;
+    float valRange = max-min;
+    float windowStepSize = valRange/windowSize;
+    float[] particleWindow;
+    particleWindow = new float[windowSize];
+    float[] pdf;
+    pdf = new float[windowSize];
+    float expected;
+    
+    // fill in the values that make up the range convered in window
+    particleWindow[0] = min;
+    for(int i=1; i < windowSize; i++)
+    {
+      particleWindow[i] = particleWindow[i-1]+windowStepSize; //i*windowStepSize + min;
+    }
+    
+    //Creating the density function
+    for(int i = 0; i < windowSize; i++)
+    {
+      float px = 0.00;
+      for(int j=0; j < p.length; j++)
+      {
+        float w = p[j].x;
+        float x = particleWindow[i];
+        float dif = w-x;
+        float egain = exp(-(dif*dif)/(2*(sigma * sigma)));
+        float u = egain/(sqrt(2*PI)*sigma);
+        px += u;
+      }
+      px = px/p.length;
+      pdf[i] = px;
+     }
+     
+     // normalizing parzens density function(distribution)
+     float prePdfSum = 0.00;
+     for(int i=0; i < windowSize; i++)
+     {
+        prePdfSum += pdf[i]; 
+     }
+     for(int i=0; i < windowSize; i++)
+     {
+        pdf[i] = pdf[i]/prePdfSum; 
+     }
+     
+     // gathering expected value
+     expected= 0.00;
+     for(int i=0; i < windowSize; i++)
+     {
+        expected += particleWindow[i] *pdf[i]; 
+     }
+     return expected;
+    
   }
   
   void getKFpos()
@@ -452,6 +542,7 @@ class Bot
     kfY = y + random(-20, 20);
     Kbot.move(kfX, kfY);
     //Kbot.display();
+    
   }
 }
 

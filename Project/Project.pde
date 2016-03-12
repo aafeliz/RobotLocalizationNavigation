@@ -55,7 +55,4 @@ void draw()
   bot.Pbot.display();
   bot.Kbot.display();
   bot.display(); //<>//
-  
-  
-  
 }

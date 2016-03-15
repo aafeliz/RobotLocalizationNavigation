@@ -475,7 +475,7 @@ class Bot
     
     int windowSize = p.length*2;
     float valRange = max-min;
-    float windowStepSize = valRange/windowSize;
+    float windowStepSize = valRange/(windowSize-1);
     float[] particleWindow;
     particleWindow = new float[windowSize];
     float[] pdf;
@@ -487,6 +487,14 @@ class Bot
     for(int i=1; i < windowSize; i++)
     {
       particleWindow[i] = particleWindow[i-1]+windowStepSize; //i*windowStepSize + min; //
+    }
+    if(particleWindow[windowSize-1] < (max))
+    {
+      print("fix the particle window values    max: ");
+      print(max);
+      print("    window: ");
+      println(particleWindow[windowSize-1]);
+      
     }
     
     //Creating the density function
@@ -516,7 +524,15 @@ class Bot
      {
         pdf[i] = pdf[i]/prePdfSum; 
      }
-     
+     float afterSum = 0.00;
+     for(int i=0; i < windowSize; i++)
+     {
+        afterSum += pdf[i]; 
+     }
+     if(afterSum == 1.00)
+     {
+       println("density funtion normalized");
+     }
      // gathering expected value
      expected= 0.00;
      for(int i=0; i < windowSize; i++)
@@ -529,7 +545,7 @@ class Bot
   
   void getKFpos()
   {
-    println("needs to be implemented");
+    //println("needs to be implemented");
     kfX = x + random(-20, 20);
     kfY = y + random(-20, 20);
     Kbot.move(kfX, kfY);

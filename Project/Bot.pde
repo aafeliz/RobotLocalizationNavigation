@@ -455,14 +455,15 @@ class Bot
       beY[0] = secs[0].y;
       beY[1] = secs[1].y;
     }
-    float sigma = 0.1;
-    pfX = parzensWindow(p, sigma, beX) - (Pbot.botWidth*0.5); 
-    pfY = parzensWindow(p, sigma, beY) - (Pbot.botHeight*0.5); 
+    float sigma = 1.0;
+   
+    pfX = parzensWindow(p, sigma, beX, true) - (Pbot.botWidth*0.5); 
+    pfY = parzensWindow(p, sigma, beY, false) - (Pbot.botHeight*0.5); 
     Pbot.move(pfX, pfY);
     //Pbot.display();
    
   }
-  float parzensWindow(Particle p[], float sigma, float beaconPos[])
+  float parzensWindow(Particle p[], float sigma, float beaconPos[], Boolean axis) // axis true=x, false=y
   {
     // chosing values for range and position of window
     float min = min(beaconPos);
@@ -470,6 +471,7 @@ class Bot
     if(beaconPos[2] < 0)
     {
       min = min(beaconPos[0], beaconPos[1]);
+      max = max(beaconPos[0], beaconPos[1]);
     }
     
     
@@ -488,6 +490,7 @@ class Bot
     {
       particleWindow[i] = particleWindow[i-1]+windowStepSize; //i*windowStepSize + min; //
     }
+    /*
     if(particleWindow[windowSize-1] < (max))
     {
       print("fix the particle window values    max: ");
@@ -496,23 +499,51 @@ class Bot
       println(particleWindow[windowSize-1]);
       
     }
+    else if(particleWindow[1] > (min))
+    {
+      print("fix the particle window values    min: ");
+      print(min);
+      print("    window: ");
+      println(particleWindow[1]);
+    }*/
     
     //Creating the density function
-    for(int i = 0; i < windowSize; i++)
+    if(axis)
     {
-      float px = 0.00;
-      for(int j=0; j < p.length; j++)
+      for(int i = 0; i < windowSize; i++)
       {
-        float w = p[j].x;
-        float x = particleWindow[i];
-        float dif = w-x;
-        float egain = exp(-(dif*dif)/(2*(sigma * sigma)));
-        float u = egain/(sqrt(2*PI)*sigma);
-        px += u;
-      }
-      px = px/p.length;
-      pdf[i] = px;
-     }
+        float px = 0.00;
+        for(int j=0; j < p.length; j++)
+        {
+          float w = p[j].x;
+          float x = particleWindow[i];
+          float dif = w-x;
+          float egain = exp(-(dif*dif)/(2*(sigma * sigma)));
+          float u = egain/(sqrt(2*PI)*sigma);
+          px += u;
+        }
+        px = px/p.length;
+        pdf[i] = px;
+       }
+    }
+    else
+    {
+      for(int i = 0; i < windowSize; i++)
+      {
+        float py = 0.00;
+        for(int j=0; j < p.length; j++)
+        {
+          float w = p[j].y;
+          float y = particleWindow[i];
+          float dif = w-y;
+          float egain = exp(-(dif*dif)/(2*(sigma * sigma)));
+          float u = egain/(sqrt(2*PI)*sigma);
+          py += u;
+        }
+        py = py/p.length;
+        pdf[i] = py;
+       }
+    }
      
      // normalizing parzens density function(distribution)
      float prePdfSum = 0.00;
@@ -529,7 +560,7 @@ class Bot
      {
         afterSum += pdf[i]; 
      }
-     if(afterSum == 1.00)
+     if(afterSum <= 1.10 & afterSum >= 0.99)
      {
        println("density funtion normalized");
      }
@@ -539,6 +570,7 @@ class Bot
      {
         expected += particleWindow[i] *pdf[i]; 
      }
+     
      return expected;
     
   }

@@ -1,4 +1,6 @@
 
+
+
 class EstBot
 {
   float x, y;
@@ -6,6 +8,7 @@ class EstBot
   float heading;
   String name;
   float R,G,B;
+  char letter;
   
   EstBot(String _name, float _x, float _y, float _botWidth, float _botHeight, float _heading)
   {
@@ -20,29 +23,34 @@ class EstBot
     B = 100;
     
     
+    
     if(name == "Kalman")
     {
       R = 200;
       G = 20;
       B = 20;
-      
+      letter = 'K';
     }
     else if(name == "Particle")
     {
       R = 20;
       G = 20;
       B = 200;
+      letter = 'P';
     }
     
   }
   
   void display()
   {
-    fill(R, G, B);
+    fill(R, G, B, 50);
     strokeWeight(3);
-    stroke(R, G, B);
+    stroke(R, G, B,70);
     //rotate(heading);
-    rect(x, y, botWidth, botHeight); 
+    rect(x, y, botWidth, botHeight, 7); 
+    textSize(36);
+    fill(50);
+    text(letter,(x+botWidth*0.1),(y+botHeight*0.8));
   }
   
   void move(float newX, float newY)

@@ -482,7 +482,10 @@ class Bot
    
     pfX = parzensWindow(p, sigma, beX, true) - (Pbot.botWidth*0.5); 
     pfY = parzensWindow(p, sigma, beY, false) - (Pbot.botHeight*0.5); 
-    Pbot.move(pfX, pfY);
+    if((!Float.isNaN(pfX)) && (!Float.isNaN(pfY)))
+    {
+      Pbot.move(pfX, pfY);
+    }
     //Pbot.display();
    
   }
@@ -624,21 +627,7 @@ class Bot
     //tempy = p[0].y;
     
     
-    /*
-    //x
-    x1=x2;
-    px1=px2*1+1.0;
-    kx=px1/(2.0+px1);
-    x2=x1+kx*(tempx-x1);
-    px2=(1-kx)*px1;
     
-    //y
-    y1=y2;
-    py1=py2+1.0;
-    ky=py1/(2.0+py1);
-    y2=y1+ky*(tempy-1*y1);
-    py2=(1-ky)*py1;
-    */
     if((!Float.isNaN(tempx)) && (!Float.isNaN(tempy))) // still goes to nan
     {
       /*if(Float.isNaN(px1) || Float.isNaN(py1) || Float.isNaN(px2) || Float.isNaN(py2) || Float.isNaN(x1) || Float.isNaN(x2) || Float.isNaN(y1) || Float.isNaN(y2) || Float.isNaN(kx) || Float.isNaN(ky))
@@ -655,21 +644,21 @@ class Bot
         ky=0.0;
         
       }*/
-    
-      px1 = 1*px2*1+1.0;
-      kx = px1*1/(2.0+1*px1*1);
-      x1=1*x2;
-      x2=1*x1+kx*(tempx-1*x1);
-      px2=(1-kx*1)*px1;
-      //y
-      y1=1*y2;
-      py1=1*py2*3.0+1.0;
-      ky=py1*1/(2.0+1*py1*1);
-      y2=1*y1+ky*(tempy-1*y1);
-      py2=(1-ky*1)*py1;
+      x1=x2;
+      px1=px2+1.0;
+      kx=px1/(2.0+px1);
+      x2=x1+kx*(tempx-x1);
+      px2=(1-kx)*px1;
       
-      kfX=x2;
-      kfY=y2;
+      //y
+      y1=y2;
+      py1=py2+1.0;
+      ky=py1/(2.0+py1);
+      y2=y1+ky*(tempy-1*y1);
+      py2=(1-ky)*py1;
+      
+      kfX= x2 - (Kbot.botWidth*0.5); 
+      kfY= y2 - (Pbot.botHeight*0.5);
       Kbot.move(kfX, kfY);
     }
     

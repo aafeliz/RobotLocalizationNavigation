@@ -16,10 +16,19 @@ final float _botHeight = scale/(winHeight*20);
 final int numP = 100;
 final int pNumDelta = 50;
 
+
+PFont f;
+// The font "andalemo.ttf" must be located in the 
+// current sketch's "data" directory to load successfully
+
+
 Beacon[] be = new Beacon[numBeacons];
 Bot bot;
 void setup()
 {
+   f = createFont("Chalkboard-Bold.vlw", 24);
+  textFont(f);
+  //textAlign(CENTER, CENTER);
   size(800, 800);
   for(int i =0; i < be.length; i++)
   {
@@ -52,7 +61,7 @@ void draw()
   {
     bot.secs[j].display(); 
   }
-  //bot.Pbot.display();
+  bot.Pbot.display();
   bot.Kbot.display();
   bot.display(); //<>//
 }

@@ -1,7 +1,7 @@
 // Beacon parameters
 final int winHeight = 800;
 final int winWidth = 800;
-final int numBeacons = 20;
+final int numBeacons = 40;
 final int maxBeaconRange = int(winWidth/2);
 final float distBetBeacons = maxBeaconRange/(numBeacons/1.5);
 final int beaconRangeVar = 10;
@@ -31,7 +31,7 @@ void setup()
         be[i].myX = random(0, winWidth);
         be[i].myY = random(0, winHeight);
       }
-    println("constructed a beacon " + i);
+      println("constructed a beacon " + i);
     }
   }
   bot = new Bot(botX, botY, headinginit, scale, _botWidth, _botHeight, numP, pNumDelta);
@@ -43,8 +43,8 @@ void draw()
   background(255);
   bot.move();
   bot.kNearestBeacon(be);
-  bot.getParticles(be); //<>//
-  for(int j = 0; j < bot.pIndx; j++) //<>//
+  bot.getParticles(be); //<>// //<>//
+  for(int j = 0; j < bot.pIndx; j++) //<>// //<>//
   {
     bot.p[j].display(); 
   }
@@ -54,5 +54,5 @@ void draw()
   }
   bot.Pbot.display();
   //bot.Kbot.display();
-  bot.display(); //<>//
+  bot.display(); //<>// //<>//
 }

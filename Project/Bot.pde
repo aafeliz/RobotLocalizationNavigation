@@ -572,7 +572,8 @@ class Bot
      }
      if(afterSum <= 1.10 && afterSum >= 0.99)
      {
-       println("density funtion normalized");
+       print("density funtion normalized: ");
+       println(afterSum);
      }
      else
      {

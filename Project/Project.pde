@@ -43,8 +43,8 @@ void draw()
   background(255);
   bot.move();
   bot.kNearestBeacon(be);
-  bot.getParticles(be); //<>// //<>//
-  for(int j = 0; j < bot.pIndx; j++) //<>// //<>//
+  bot.getParticles(be); //<>//
+  for(int j = 0; j < bot.pIndx; j++) //<>//
   {
     bot.p[j].display(); 
   }
@@ -52,7 +52,7 @@ void draw()
   {
     bot.secs[j].display(); 
   }
-  bot.Pbot.display();
-  //bot.Kbot.display();
-  bot.display(); //<>// //<>//
+  //bot.Pbot.display();
+  bot.Kbot.display();
+  bot.display(); //<>//
 }

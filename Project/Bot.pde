@@ -37,6 +37,19 @@ class Bot
   EstBot Pbot;
   float kfX, kfY;
   float pfX, pfY;
+   //for kalman
+  float x1=0.0;
+  float y1=0.0;
+  float x2=0.0;
+  float y2=0.0;
+  
+  float px1=0.0;
+  float py1=0.0;
+  float px2=0.0;
+  float py2=0.0;
+  
+  float kx=0.0;
+  float ky=0.0;
   
   Bot(float xpos, float ypos, float headinginit, float scale, float _botWidth, float _botHeight, int _numP, int _pNumDelta)
   {
@@ -81,28 +94,28 @@ class Bot
     
   }
   void move()
-  {
-    if(mousePressed)
+  { //<>//
+    if(mousePressed) //<>//
     {
       targetX = mouseX;
       targetY = mouseY;
     }
     dx = targetX - x;
-    dy = targetY - y;
-    x += dx*easing;
+    dy = targetY - y; //<>//
+    x += dx*easing; //<>//
     y += dy*easing;
   }
   void display()
   {
-     //<>//
-    fill(0,255,222); //<>//
+    
+    fill(0,255,222);
     strokeWeight(3);
     stroke(155, 153);
     //rotate(heading);
     rect(x, y, botWidth, botHeight); 
     
-     //<>//
-  } //<>//
+    
+  }
   void kNearestBeacon(Beacon be[])
   { //<>//
     near1Idx = -1; //<>// //<>// //<>//
@@ -195,7 +208,7 @@ class Bot
   void getParticles(Beacon beacon[])
   { 
     //while?
-    if((near1Idx > -1) && (near2Idx > -1))
+    if((near1Idx > -1) && (near2Idx > -1)) //<>//
     {
       int i = pIndx;
       while((i < (pIndx + pNumDelta)) && (i < p.length))
@@ -204,18 +217,18 @@ class Bot
         {
           triangulate(beacon[near1Idx], beacon[near2Idx], beacon[near3Idx], i);
         }
-        else //<>//
+        else
         {
           triangulate(beacon[near1Idx], beacon[near2Idx], i);
         }
-        i++; //<>//
+        i++;
       }
       pIndx = i;
       if (pIndx == p.length)
       {
         pIndx = 0; 
         getPFpos();   //<>//
-        getKFpos();
+        getKFpos(); //<>//
         //might set show for all particles to false
       }
       //display used to be here //<>// //<>//
@@ -593,16 +606,80 @@ class Bot
   
   void getKFpos()
   {
-    //println("needs to be implemented");
+    /*//println("needs to be implemented");
     kfX = x + random(-20, 20);
     kfY = y + random(-20, 20);
     Kbot.move(kfX, kfY);
-    //Kbot.display();
+    //Kbot.display();*/
+    float tempx = 0.00;
+    float tempy = 0.00;
+    for(int i=0; i < p.length; i++)
+    {
+      tempx += p[i].x;
+      tempy += p[i].y;
+    }
+    tempx = tempx/p.length;
+    tempy = tempy/p.length; //<>//
+    //tempx = p[0].x;
+    //tempy = p[0].y;
+    
+    
+    /*
+    //x
+    x1=x2;
+    px1=px2*1+1.0;
+    kx=px1/(2.0+px1);
+    x2=x1+kx*(tempx-x1);
+    px2=(1-kx)*px1;
+    
+    //y
+    y1=y2;
+    py1=py2+1.0;
+    ky=py1/(2.0+py1);
+    y2=y1+ky*(tempy-1*y1);
+    py2=(1-ky)*py1;
+    */
+    if((!Float.isNaN(tempx)) && (!Float.isNaN(tempy))) // still goes to nan
+    {
+      /*if(Float.isNaN(px1) || Float.isNaN(py1) || Float.isNaN(px2) || Float.isNaN(py2) || Float.isNaN(x1) || Float.isNaN(x2) || Float.isNaN(y1) || Float.isNaN(y2) || Float.isNaN(kx) || Float.isNaN(ky))
+      {
+        x1=0.0;
+        y1=0.0;
+        x2=0.0;
+        y2=0.0;
+        px1=0.0;
+        py1=0.0;
+        px2=0.0;
+        py2=0.0;
+        kx=0.0;
+        ky=0.0;
+        
+      }*/
+    
+      px1 = 1*px2*1+1.0;
+      kx = px1*1/(2.0+1*px1*1);
+      x1=1*x2;
+      x2=1*x1+kx*(tempx-1*x1);
+      px2=(1-kx*1)*px1;
+      //y
+      y1=1*y2;
+      py1=1*py2*3.0+1.0;
+      ky=py1*1/(2.0+1*py1*1);
+      y2=1*y1+ky*(tempy-1*y1);
+      py2=(1-ky*1)*py1;
+      
+      kfX=x2;
+      kfY=y2;
+      Kbot.move(kfX, kfY);
+    }
+    
+    
     
   }
 }
 
-
+ 
+  
  
 
 

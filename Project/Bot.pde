@@ -1,4 +1,11 @@
 
+/*
+  *TODO: 
+  *  Fix the issue with data not normalizing
+  *  Give distance from beacon a functional weight based on distance     
+  *
+*/
+
 class Bot
 {
   //bot attributes
@@ -75,8 +82,11 @@ class Bot
   }
   void move()
   {
-    targetX = mouseX;
-    targetY = mouseY;
+    if(mousePressed)
+    {
+      targetX = mouseX;
+      targetY = mouseY;
+    }
     dx = targetX - x;
     dy = targetY - y;
     x += dx*easing;
@@ -84,15 +94,15 @@ class Bot
   }
   void display()
   {
-    
-    fill(0,255,222);
+     //<>//
+    fill(0,255,222); //<>//
     strokeWeight(3);
     stroke(155, 153);
     //rotate(heading);
     rect(x, y, botWidth, botHeight); 
     
-    
-  }
+     //<>//
+  } //<>//
   void kNearestBeacon(Beacon be[])
   { //<>//
     near1Idx = -1; //<>// //<>// //<>//
@@ -194,11 +204,11 @@ class Bot
         {
           triangulate(beacon[near1Idx], beacon[near2Idx], beacon[near3Idx], i);
         }
-        else
+        else //<>//
         {
           triangulate(beacon[near1Idx], beacon[near2Idx], i);
         }
-        i++;
+        i++; //<>//
       }
       pIndx = i;
       if (pIndx == p.length)
@@ -560,9 +570,14 @@ class Bot
      {
         afterSum += pdf[i]; 
      }
-     if(afterSum <= 1.10 & afterSum >= 0.99)
+     if(afterSum <= 1.10 && afterSum >= 0.99)
      {
        println("density funtion normalized");
+     }
+     else
+     {
+       print("not normalized  :");
+       println(afterSum);
      }
      // gathering expected value
      expected= 0.00;
@@ -585,6 +600,7 @@ class Bot
     
   }
 }
+
 
  
 

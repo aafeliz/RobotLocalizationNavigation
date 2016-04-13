@@ -24,7 +24,9 @@ PFont f;
 
 Beacon[] be = new Beacon[numBeacons];
 Bot bot;
-TrackBotQueue q = new TrackBotQueue(1000);
+TrackBotQueue Aq = new TrackBotQueue(0,255,222,200);
+TrackBotQueue Kq = new TrackBotQueue(200, 20, 20, 200);
+TrackBotQueue Pq = new TrackBotQueue(20, 20, 200, 200);
 void setup()
 {
    f = createFont("Chalkboard-Bold.vlw", 24);
@@ -53,8 +55,8 @@ void draw()
   background(255);
   bot.move();
   bot.kNearestBeacon(be);
-  bot.getParticles(be); //<>//
-  for(int j = 0; j < bot.pIndx; j++) //<>//
+  bot.getParticles(be);
+  for(int j = 0; j < bot.pIndx; j++)
   {
     bot.p[j].display(); 
   }
@@ -62,14 +64,16 @@ void draw()
   {
     bot.secs[j].display(); 
   }
-  q.push(bot.x, bot.y, 'A');
-  q.push(bot.Kbot.x, bot.Kbot.y, 'K');
-  q.push(bot.Pbot.x, bot.Pbot.y, 'P');
-  q.display('A');
-  q.display('K');
-  q.display('P');
-  
+  Aq.push(bot.x, bot.y);
+  Kq.push(bot.Kbot.x, bot.Kbot.y);
+  Pq.push(bot.Pbot.x, bot.Pbot.y);
+  Aq.pop();
+  Kq.pop();
+  Pq.pop();
   bot.Pbot.display();
   bot.Kbot.display();
-  bot.display(); //<>//
+  bot.display();
+  Aq.display();
+  Kq.display();
+  Pq.display();
 }

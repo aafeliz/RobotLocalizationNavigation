@@ -23,16 +23,17 @@ class Beacon
   {
     if((detected == true) && (near == true))
     {
-      noFill();
+      fill(203,255,236);
       strokeWeight(3);
-      stroke(204,102,0);
+      smooth(20);
+      stroke(168,216,198);
       ellipse(myX, myY, maxRange, maxRange);
     }
     else if (detected == true)
     {
       noFill();
       strokeWeight(3);
-      stroke(155, 153);
+      stroke(155, 153, 255, 90);
       ellipse(myX, myY, maxRange, maxRange);
     }
   }

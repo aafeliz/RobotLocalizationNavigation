@@ -1,166 +1,103 @@
 /*
   *TODO:
-  *  Implement the display function to display past N movements(capacity) 
+  *  check the pop has no leaks
 */
+import java.util.Iterator;
 
-class TrackBotQueue 
+public class TrackBotQueue
 {
-  
-  final int capacity;
-  float actual[][];
-  float kbot[][];
-  float pbot[][];
-  
-  //int size = 0;
-  int actualTop = -1;
-  int actualRear = 0;
-  int kbotTop = -1;
-  int kbotRear = 0;
-  int pbotTop = -1;
-  int pbotRear = 0;
-  
-  TrackBotQueue(int capacity_)
-  {
-    capacity = capacity_;
-    actual = new float[capacity][2];
-    kbot = new float[capacity][2];
-    pbot = new float[capacity][2];
-  }
- 
-  void push(float x, float y, char bot) 
-  {
-    if(bot == 'A')
+    private Node head;
+    private Node tail;
+    private int length;
+    int maxLength;
+    int R;
+    int G;
+    int B;
+
+    public TrackBotQueue(int r, int g, int b, int capacity)
     {
-      if (actualTop < capacity - 1) 
+        this.length = 0;
+        this.maxLength = capacity;
+        this.head = null;
+        this.tail = null;
+        this.R = r;
+        this.G = g;
+        this.B = b;
+    }
+
+    public int length()
+    {
+        return this.length;
+    }
+
+    void push(float x, float y)
+    {
+      if(this.length < this.maxLength) //<>//
       {
-        actualTop++;
-        actual[actualTop][0] = x;
-        actual[actualTop][1] = y;
-        //display();
-      } 
-      else 
-      {
-        println("Overflow !");
+        if(length()==0)
+        {
+          Node node = new Node();
+          node.x = x;
+          node.y = y;
+          node.ahead = null;
+          node.back = null;
+          this.head = node;
+          this.tail = node;
+          this.length++;
+        }
+        else
+        {
+          Node node = new Node();
+          node.x = x;
+          node.y = y;
+          node.ahead = this.tail;
+          this.tail.back = node;
+          this.tail = node;
+          this.length++;
+        }
       }
     }
-    else if(bot=='K')
+    void pop()
     {
-      if (kbotTop < capacity - 1) 
+      if(this.length >= this.maxLength)
       {
-        kbotTop++;
-        kbot[kbotTop][0] = x;
-        kbot[kbotTop][1] = y;
-      } 
-      else 
-      {
-        println("Overflow !");
+        if(length()!=0)
+        {
+          this.head = this.head.back;
+          this.head.ahead.back = null;
+          this.head.ahead = null;
+          this.length--;
+        }
+        else
+        {
+          println("Queue is empty");
+        }
       }
     }
-    else if(bot=='P')
-    {
-      if (pbotTop < capacity - 1) 
-      {
-        pbotTop++;
-        pbot[pbotTop][0] = x;
-        pbot[pbotTop][1] = y;
-      } 
-      else 
-      {
-        println("Overflow !");
-      }
-    }
-  }
- 
-  void pop(char bot) 
-  {
-    if(bot == 'A')
-    {
-      if (actualTop >= actualRear) 
-      {
-        actualRear++;
-        actualTop--;
-      } 
-      else 
-      {
-        println("Underflow !");
-      }
-    }
-    else if(bot == 'K')
-    {
-      if (kbotTop >= kbotRear) 
-      {
-        kbotRear++;
-        kbotTop--;
-      } 
-      else 
-      {
-        println("Underflow !");
-      }
-    }
-    if(bot == 'P')
-    {
-      if (pbotTop >= pbotRear) 
-      {
-        pbotRear++;
-        pbotTop--;
-      } 
-      else 
-      {
-        println("Underflow !");
-      }
-    }
-    
-  }
-  
-  void display(char bot)
-  {
-    if(bot == 'A')
+    void display()
     {
       float x1 = 0;
       float x2 = 0;
       float y1 = 0;
       float y2 = 0;
-      for(int i = actualRear; i< actualTop; i++)
+      Node temp = this.head;
+      while(temp.back != null)
       {
-        x1 = actual[i][0];
-        y1 = actual[i][1];
-        x2 = actual[i+1][0];
-        y2 = actual[i+1][1];
+        x1 = temp.x;
+        y1 = temp.y;
+        x2 = temp.back.x;
+        y2 = temp.back.y;
+        stroke( this.R, this.G, this.B, 50);
         line(x1, y1, x2, y2);
+        temp = temp.back;
       }
     }
-    else if(bot == 'P')
-    {
-      float x1 = 0;
-      float x2 = 0;
-      float y1 = 0;
-      float y2 = 0;
-      for(int i = pbotRear; i< pbotTop; i++)
-      {
-        x1 = pbot[i][0];
-        y1 = pbot[i][1];
-        x2 = pbot[i+1][0];
-        y2 = pbot[i+1][1];
-        line(x1, y1, x2, y2);
-      }
-    }
-    else if(bot == 'K')
-    {
-      float x1 = 0;
-      float x2 = 0;
-      float y1 = 0;
-      float y2 = 0;
-      for(int i = kbotRear; i< kbotTop; i++)
-      {
-        x1 = kbot[i][0];
-        y1 = kbot[i][1];
-        x2 = kbot[i+1][0];
-        y2 = kbot[i+1][1];
-        line(x1, y1, x2, y2);
-      }
-    }
-   
-  }
- 
-  
+}
+
+class Node
+{
+    public float x;
+    public float y;
+    public Node back;
+    public Node ahead;
 }

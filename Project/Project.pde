@@ -4,7 +4,7 @@ final int winWidth = 800;
 final int numBeacons = 40;
 final int maxBeaconRange = int(winWidth/2);
 final float distBetBeacons = maxBeaconRange/(numBeacons/1.5);
-final int beaconRangeVar = 10;
+final int beaconRangeVar = 50;
 
 // Bot parameters 
 float botX = random(0, winWidth);
@@ -24,6 +24,7 @@ PFont f;
 
 Beacon[] be = new Beacon[numBeacons];
 Bot bot;
+TrackBotQueue q = new TrackBotQueue(1000);
 void setup()
 {
    f = createFont("Chalkboard-Bold.vlw", 24);
@@ -61,6 +62,13 @@ void draw()
   {
     bot.secs[j].display(); 
   }
+  q.push(bot.x, bot.y, 'A');
+  q.push(bot.Kbot.x, bot.Kbot.y, 'K');
+  q.push(bot.Pbot.x, bot.Pbot.y, 'P');
+  q.display('A');
+  q.display('K');
+  q.display('P');
+  
   bot.Pbot.display();
   bot.Kbot.display();
   bot.display(); //<>//

@@ -88,6 +88,7 @@ public class TrackBotQueue
         x2 = temp.back.x;
         y2 = temp.back.y;
         stroke( this.R, this.G, this.B, 50);
+        strokeWeight(10);
         line(x1, y1, x2, y2);
         temp = temp.back;
       }

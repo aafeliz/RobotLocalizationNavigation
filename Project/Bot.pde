@@ -3,7 +3,8 @@
   *TODO: 
   *  Fix the issue with data not normalizing
   *  Give distance from beacon a functional weight based on distance     
-  *
+  *  kalman filter previousestimation dependent on time passed since measurment taken
+  *    - like for example measure delta time at each measurement taken so that you can change the probabilities    
 */
 
 class Bot

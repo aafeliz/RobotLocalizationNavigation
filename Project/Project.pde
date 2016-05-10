@@ -14,7 +14,7 @@ final float scale = winHeight * winWidth;// not sure what to use as scale
 final float _botWidth = scale/(winWidth*20);
 final float _botHeight = scale/(winHeight*20);
 final int numP = 100;
-final int pNumDelta = 50;
+final int pNumDelta = 20;
 
 PFont f;
 Beacon[] be = new Beacon[numBeacons];
@@ -71,4 +71,5 @@ void draw()
   Aq.display();
   Kq.display();
   Pq.display();
+  delay(20);
 }

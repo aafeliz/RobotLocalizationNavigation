@@ -6,6 +6,7 @@ Several key mathematical concepts were implemented like the Gaussian Kernel, Par
 
 ## TODO:
   - Fix navigation vitices indexing causing crashes
+
 ## References:
 
 link to processing ide: https://www.processing.org \n

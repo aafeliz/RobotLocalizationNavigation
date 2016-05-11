@@ -1,5 +1,5 @@
 # Robot Localization and Navigation
-Check out our Wiki
+Check out our Wiki!!
 
 ## Objective:
  The objective of this robot localization project is to have a robot find its location, utilizing beacons distance information with set loacations to triangulate the robots position. The ultimate mission of this project is to make our  robot navigate to a specific location encountering several random obstacles and also identify/ know its own position as time changes. This project is based on analyzing random errors and implementing algorithm concepts of both Kalman filtering and particle filtering for best approximations. Finally, a simulation was projected using processing GUI  to track and show the real location and also errors will be simulated in navigational sensor data. 

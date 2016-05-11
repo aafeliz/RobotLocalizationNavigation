@@ -1,0 +1,11 @@
+1： We first learned about the application of Kalman Filter. Then we studied the five most important formulas,
+which can be used to get the estimated value, such as the displacement, velocity or the acceleration of the target.	
+
+2: We studied the two most classic models: constant velocity model(CV) and constant acceleration model(CA).
+We simulated the following scenario: the robot moves in a straight line with constant velocity, 
+it can have some noise, using the sensors in in the car, we can get the displacement of the robot,
+which is of course not very accurate, based on the above conditions, we can use kalman Filtering to get the accurate values.
+
+3: We have already simulated the above given scenario with Matlab, the further step is to use Processing software 
+and implement the kalman Filter.      
+

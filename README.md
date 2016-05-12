@@ -1,4 +1,4 @@
-Welcome to the RobotLocalizationNavigation wiki!
+Welcome to the Robot Localization & Navigation!
 
 # Robot Localization and Navigation
 ## Objective:

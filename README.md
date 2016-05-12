@@ -25,6 +25,16 @@ P(a < x < b) =abp(x) dx   which is non-negative for all real x.
 To understand this Parzens window more further, we looked into a simple example. Let;s say we have a region R with is a d-dimensional hypercube h, the volume will be h ^d. Then to estimate the density at point x, we center R at x, count the samples in R and input the values in this formula: p(x)=(k/n)/v. If we have a window function, it will be: o(x-xi)/h
 To count the total number of sample points, we use the p(x) equation and incoroporate  it with the estimate of dentiy p_0(x)
 
+# Robot Navigation
+
+## Introduction
+Navigation consisted of a robots ability to navigate in a predefined and set map. However the maps obstacles will initially be generated at random location and random shapes. The robot will then go on to plan and execute a path trajectory that will get robot to set user location.
+
+## Mapping:
+Generating the map and the information gained consisted of several parts. Beginning with generating obstacles at random shapes and places while avoiding any overlaps. A combination of graph theory along with intersects detection techniques were also utilized in order to generate graph that will have the interconnections required for the robot to navigate around those obstacles, as well as avoiding any concaving vertices.
+
+The graph data structure consisted of two layers. One layer connecting all there vertices that make up an object, and another layer for the connections to other vertices that make up other objects.
+
 ## TODO:
 * Join both navigation and localization simulations.
 * Use a circle point intersect method to navigate to locations without touching the actual vertex on an obstacle with the circle center centered at the robots center.

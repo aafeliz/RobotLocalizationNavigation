@@ -48,4 +48,4 @@ http://www.telecom.ulg.ac.be/publi/publications/pierlot/Pierlot2011ANewThreeObje
 
 try out the new processing feature that allows you to play with parameter while running code!! Sketch -> Tweak \n
 
-My KF code can track displace of the robot which can be uniformly accelerated or with constant velocity.
+

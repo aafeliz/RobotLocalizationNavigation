@@ -27,7 +27,7 @@ class Bot
     R = 100;
     G =100;
     B = 100;
-    this.map = new MapObstacles(15); //<>//
+    this.map = new MapObstacles(15);
     this.x = _x;
     this.y = _y;
     while(checkPoint(this.x, this.y) == true)

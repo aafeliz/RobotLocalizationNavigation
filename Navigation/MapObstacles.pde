@@ -33,10 +33,17 @@ class MapObstacles
       int oNumSides = int(random(3, 6));
       float oMin = random(25, 30);
       float oMax = random(70, 90);
+      while((oX < oMax)||(oY < oMax))
+      {
+        oX = random(800);
+        oY = random(800);
+      }
       Obstacle2 tempObs = new Obstacle2(oNumSides,oX, oY, oMin, oMax);
       tempObs.id = i;
+      tempObs.letter = char(i); 
       //boolean tester = true;
       obstacles.add(i,tempObs);
+      
       if(this.obstacles.size() > 1)
       {
         while(this.objCollide(i))
@@ -47,8 +54,14 @@ class MapObstacles
           int oNumSides2 = int(random(3, 15));
           float oMin2 = random(5, 10);
           float oMax2 = random(40, 60);
+          while((oX2 < oMax2)||(oY2 < oMax2))
+          {
+            oX2 = random(800);
+            oY2 = random(800);
+          }
           tempObs = new Obstacle2(oNumSides2,oX2, oY2, oMin2, oMax2);
           tempObs.id = i;
+          tempObs.letter = char(i);
           obstacles.set(i,tempObs);
         }
         println("created Obj: "+i);
@@ -184,6 +197,7 @@ class MapObstacles
           strokeWeight(2);
           stroke(0,255,100,20);
           line(tX1, tY1, tX2, tY2);
+          ellipse(tX1, tY1, 8,8);
           
         }
       }
@@ -192,12 +206,19 @@ class MapObstacles
   
   void display()
   {
-    for(int i = 0; i < this.obstacles.size(); i++)
+    for(int i = 0; i < this.obstacles.size(); i++) //<>//
     {
       this.obstacles.get(i).display();
+      stroke(3);
+      strokeWeight(5);
+      textSize(18);
+      fill(120);
+      float tx = (this.obstacles.get(i).maxPtX + this.obstacles.get(i).minPtX)/2.0; //this.obstacles.get(i).xPos;
+      float ty = (this.obstacles.get(i).maxPtY + this.obstacles.get(i).minPtY)/2.0; //this.obstacles.get(i).yPos;//
+      String s = str(this.obstacles.get(i).id);
+      text(s, tx, ty);
     }
     this.showLines();
-    
   }
   /*
     showLines()
@@ -351,7 +372,7 @@ class MapObstacles
     //int size = 0;
     while((this.noLineOfSight(tX1, tY1, tX2, tY2)==true))//peek of stack and destination
     {
-      OutVer tOutVer = this.findNextVer(); //<>//
+      OutVer tOutVer = this.findNextVer();
       //this.obstacles.get(tOutVer.objectNum).vertices.get(tOutVer.verId).outVer.get(i).visited = true;
       this.pStack.push(tOutVer);
       tX1 = tOutVer.x;
@@ -497,14 +518,14 @@ class MapObstacles
             if((tX3 != x1 || tY3 != y1) && (tX4 != x1 || tY4 != y1) && (tX3 != x2 || tY3 != y2) && (tX4 != x2 || tY4 != y2))
             {
               // check it intersects
-              if(lineIntersect2(tX1,tY1, tX2,tY2, tX3,tY3, tX4,tY4) == true)
+              if(lineIntersect2(tX1, tY1, tX2, tY2, tX3, tY3, tX4, tY4) == true)
               {
                 // check is distance is shorter
                 float tObjX = (tempObs3.minPtX + tempObs3.maxPtX)/2;
                 float tObjY = (tempObs3.minPtY + tempObs3.maxPtY)/2;
                 float tDist1 = dist(x1,y1,tObjX,tObjY);
                 float tDist2 = dist(x2,y2,tObjX,tObjY);
-                float tTotal = tDist1+tDist2;
+                float tTotal = tDist1 + tDist2;
                 if(tTotal < nearestObjDist)
                 {
                   nearestObjID = this.obstacles.get(i3).id;
@@ -579,116 +600,81 @@ class MapObstacles
   OutVer findNextVer()
   {
     //println("findNextVer");
+    float tX1 = 0.0;
+    float tY1 = 0.0;
     if(this.pStack.len > 0)
-    {
-      // peek the stack in order to see where to start
+    { //<>// //<>// //<>// //<>// //<>//
       OutVer fromStack = this.pStack.peekLast();
-      float tX1 = fromStack.x;
-      float tY1 = fromStack.y;
-      int tObjId = fromStack.objectNum_to;
-      int tVerId = fromStack.verId_to;
-      Ver tempV = this.obstacles.get(tObjId).vertices.get(tVerId);
-      OutVer toStack = this.pStack.peekLast();
-      // for all outver of that ver
-      float minLen = Float.POSITIVE_INFINITY;
-      int tOutID = -1;
-      for(int i=0; i < tempV.outVer.size(); i++)// stack is not empty so i can just look at the outver of that ver
-      {
-        OutVer tOutVer = tempV.outVer.get(i);
-        if(tOutVer.visited == false)
-        {
-          float len1 = tempV.outVer.get(i).weight;
-          float tX2 = tempV.outVer.get(i).x;
-          float tY2 = tempV.outVer.get(i).y;
-          float len2 = dist(tX1, tY1, tX2, tY2);
-          float tempTotal = len1 + len2;
-          int tVerId2 = tOutVer.verId_to;
-          int tObjId2 = tOutVer.objectNum_to;
-          
-          Ver tV = this.obstacles.get(tObjId2).vertices.get(tVerId2);    // check where the outVer are being made cause index might be wrong 
-          if((minLen > tempTotal) && (tV.outVer.size() > 1))// new closer spot, found with more than one connection
-          {
-             tOutID = i;
-             minLen = tempTotal; 
-             toStack = tOutVer;//tempV.outVer.get(i);
-          }
-        }
-        
-      }
-      if(tOutID > 0)
-      {
-        int tobjID = 0;
-        for (int i=0; i < this.obstacles.size(); i++)
-        {
-          if(toStack.objectNum_to == this.obstacles.get(i).id)
-          {
-            tobjID = i;
-          }
-        }
-        int toverID = 0;
-        for (int i=0; i < this.obstacles.get(tobjID).vertices.size(); i++)
-        {
-          if(toStack.verId_to == this.obstacles.get(tobjID).vertices.get(i).id)
-          {
-            toverID = i;
-          }
-        }
-        this.obstacles.get(tobjID).vertices.get(toverID).outVer.get(tOutID).visited = true;
-      }
-      return toStack;
+      tX1 = fromStack.x;
+      tY1 = fromStack.y;
     }
     else
     {
       /// I think instead i should do obj in  line ID
-      float tX1 = this.rX;
-      float tY1 = this.rY;
-      int tObjID = ObjInLineId(tX1, tY1, this.destX, this.destY);
-      
-      Obstacle2 tObj = this.obstacles.get(tObjID);
-      for(int i = 0; i < this.obstacles.size(); i++)
+      tX1 = this.rX;
+      tY1 = this.rY;
+    }
+    int tObjID = ObjInLineId(tX1, tY1, this.destX, this.destY); //<>//
+    
+    Obstacle2 tObj = this.obstacles.get(tObjID);
+    for(int i = 0; i < this.obstacles.size(); i++)
+    {
+      if(this.obstacles.get(i).id == tObjID)
       {
-        if(this.obstacles.get(i).id == tObjID)
-        {
-          tObj = this.obstacles.get(i);
-          break;
-        }
+        tObj = this.obstacles.get(i);
+        break;
       }
-      
-      //Ver tempV = this.obstacles.get(tObjID).vertices.get(tVerId);
-      
-      // check if i can even get there without things in my way
-      // check chich vertex is best along the tempV by shortest distance
-      
-      
-      OutVer toStack =new OutVer(0, 0, 0, 0, 0, 0, 0);
-      // for all outver of that ver
-      float minLen = Float.POSITIVE_INFINITY;
-      for(int i=0; i < tObj.vertices.size(); i++)
+    }
+    
+    //Ver tempV = this.obstacles.get(tObjID).vertices.get(tVerId);
+    
+    // check if i can even get there without things in my way
+    // check chich vertex is best along the tempV by shortest distance
+    
+    
+    OutVer toStack =new OutVer(0, 0, 0, 0, 0, 0, 0);
+    // for all outver of that ver
+    float minLen = Float.POSITIVE_INFINITY;
+    for(int i=0; i < tObj.vertices.size(); i++)
+    {
+      float tX2 = tObj.vertices.get(i).x;//tempV.outVer.get(i).x;
+      float tY2 = tObj.vertices.get(i).y;//tempV.outVer.get(i).y;
+      if(noLineOfSight(tX1, tY1, tX2, tY2) == false)
       {
-        float tX2 = tObj.vertices.get(i).x;//tempV.outVer.get(i).x;
-        float tY2 = tObj.vertices.get(i).y;//tempV.outVer.get(i).y;
-        if(noLineOfSight(tX1, tY1, tX2, tY2) == false)
+        float len1 = dist(tX2, tY2, this.destX, this.destY);//vertices to destination
+        float len2 = dist(tX1, tY1, tX2, tY2);
+        float tempTotal = len1 + len2;                    //this.desX, this.destY
+        if((minLen > tempTotal)&&((noLineOfSight(tX2, tY2, tX1, tY1))== false)&&(tObj.vertices.get(i).outVer.size() > 1))// if there is a line of sight from that point or you can go elsewhere
         {
-          float len1 = dist(tX2,tY2, this.destX, this.destY);//vertices to destination
-          float len2 = dist(tX1, tY1, tX2, tY2);
-          float tempTotal = len1 + len2;                    //this.desX, this.destY
-          if((minLen > tempTotal)&&((noLineOfSight(tX2, tY2, tX1, tY1))== false)&&(tObj.vertices.get(i).outVer.size() > 1))// if there is a line of sight from that point or you can go elsewhere
-          {
-             minLen = tempTotal;
-             Ver tVer = tObj.vertices.get(i);
-             int tverId = tVer.id;
+           minLen = tempTotal;
+           Ver tVer = tObj.vertices.get(i);
+           int tverId = tVer.id;
+           if(this.pStack.len > 0)
+           { 
+             OutVer fromStack = this.pStack.peekLast();
+             if(fromStack.objectNum_to != tObjID || fromStack.verId_to != tverId)
+             {
+               if(tVer.outVer.size()>1)
+               {
+                 //OutVer tOutver = this.obstacles.get(tObjID).vertices.get(i).outVer.get(tOutID)
+                 toStack = new OutVer(tObjID, tverId, 0, 0, len2,  tVer.x, tVer.y);
+               }
+             }
+           }
+           else
+           {
              if(tVer.outVer.size()>1)
              {
                //OutVer tOutver = this.obstacles.get(tObjID).vertices.get(i).outVer.get(tOutID)
                toStack = new OutVer(tObjID, tverId, 0, 0, len2,  tVer.x, tVer.y);
              }
-          }
-          
+           }
+           
         }
       }
-      //this.obstacles.get(toStack.objectNum).vertices.get(toStack.verId).outVer.get(
-      return toStack;
     }
+    //this.obstacles.get(toStack.objectNum).vertices.get(toStack.verId).outVer.get(
+    return toStack;
   }
   
   /*

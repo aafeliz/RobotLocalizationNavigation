@@ -5,9 +5,13 @@
  */
 
 //MapObstacles o = new MapObstacles(15);
+
+PFont f;
 Bot r = new Bot(100.0, 100.0, 10.0, 10.0, 0.0);
 void setup()
 {
+  f = createFont("Chalkboard-Bold.vlw", 24);
+  textFont(f);
   size(800, 800);
   background(255);
   //o.display();
@@ -19,16 +23,14 @@ void draw()
  // r.map.display();
   if(firstDone == true)
   {
+    r.move();
     r.checkStack(); //<>//
-    r.move(); //<>// //<>//
   }
   else
   {
-    r.checkStack(); //<>//
-    firstDone = true; //<>//
+    r.checkStack();
+    firstDone = true;
   }
-  
-  
   
   r.display();
   delay(100);

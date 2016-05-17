@@ -133,12 +133,13 @@ class Bot
   void move()
   {
     
-    /*if(mousePressed)
+    if(mousePressed)
     {
       this.destX = mouseX;
       this.destY = mouseY;
       this.changeDest = true;
-    }*/
+    }
+    /*
     if(((this.x == this.destX) && (this.y == this.destY)))//(loopCount < 50) && 
     {
       this.destX = random(800);
@@ -151,7 +152,7 @@ class Bot
       //this.changeDest = true;
       println("destination reached");
       this.loopCount = 0;
-    }
+    }*/
     else
     {
       this.dx = this.targetX - this.x;

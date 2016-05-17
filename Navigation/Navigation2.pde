@@ -7,6 +7,8 @@
 //MapObstacles o = new MapObstacles(15);
 
 PFont f;
+float oldDestX = 0.0;
+float oldDestY = 0.0;
 Bot r = new Bot(100.0, 100.0, 10.0, 10.0, 0.0);
 void setup()
 {
@@ -25,13 +27,21 @@ void draw()
   {
     r.move();
     r.checkStack(); //<>//
+    oldDestX = r.destX;
+    oldDestY = r.destY;
+    if(r.map.pStack.len>0)
+    {
+      println("planned new path");
+    }
   }
   else
   {
     r.checkStack();
+    oldDestX = r.destX;
+    oldDestY = r.destY;
     firstDone = true;
   }
   
   r.display();
-  delay(100);
+  delay(10);
 }

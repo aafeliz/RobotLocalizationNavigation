@@ -221,8 +221,8 @@ class MapObstacles
     this.showLines();
   }
   /*
-    showLines()
-    show all connections between vertices
+    resetOuts()
+    reseting all the visited booleans on out vertices
   */
   void resetOuts()
   {
@@ -237,13 +237,17 @@ class MapObstacles
       }
     }
   }
+  /*
+    resetVers()
+    reseting all the visited booleans on vertices
+  */
   void resetVers()
   {
     for(int i = 0; i < this.obstacles.size(); i++)
     {
       for(int j = 0; j < this.obstacles.get(i).vertices.size(); j++)
       {
-        this.obstacles.get(i).vertices.get(i).visited = false;
+        this.obstacles.get(i).vertices.get(j).visited = false;
       }
     }
   }
@@ -380,6 +384,7 @@ class MapObstacles
       //size++;
     }
     this.resetOuts();
+    this.resetVers();
     // finally add destination
     float tw = dist(tX1, tY1, tX2, tY2);
     OutVer tOutVer = new OutVer(Integer.MAX_VALUE, Integer.MAX_VALUE, Integer.MAX_VALUE, Integer.MAX_VALUE, tw, tX2, tY2);
@@ -646,18 +651,25 @@ class MapObstacles
         float tempTotal = len1 + len2;                    //this.desX, this.destY
         if((minLen > tempTotal)&&((noLineOfSight(tX2, tY2, tX1, tY1))== false)&&(tObj.vertices.get(i).outVer.size() > 1))// if there is a line of sight from that point or you can go elsewhere
         {
-           minLen = tempTotal;
+           
            Ver tVer = tObj.vertices.get(i);
            int tverId = tVer.id;
+           
            if(this.pStack.len > 0)
            { 
-             OutVer fromStack = this.pStack.peekLast();
-             if(fromStack.objectNum_to != tObjID || fromStack.verId_to != tverId)
+             if(this.obstacles.get(tObjID).vertices.get(tverId).visited == false) // have not visited vertex
              {
-               if(tVer.outVer.size()>1)
+               OutVer fromStack = this.pStack.peekLast();
+               if(fromStack.objectNum_to != tObjID || fromStack.verId_to != tverId)
                {
-                 //OutVer tOutver = this.obstacles.get(tObjID).vertices.get(i).outVer.get(tOutID)
-                 toStack = new OutVer(tObjID, tverId, 0, 0, len2,  tVer.x, tVer.y);
+                 if(tVer.outVer.size()>1)
+                 {
+                   minLen = tempTotal;
+                   //OutVer tOutver = this.obstacles.get(tObjID).vertices.get(i).outVer.get(tOutID)
+                   toStack = new OutVer(tObjID, tverId, 0, 0, len2,  tVer.x, tVer.y);
+                   this.obstacles.get(tObjID).vertices.get(tverId).visited = true;
+                   
+                 }
                }
              }
            }
@@ -665,10 +677,13 @@ class MapObstacles
            {
              if(tVer.outVer.size()>1)
              {
+               minLen = tempTotal;
                //OutVer tOutver = this.obstacles.get(tObjID).vertices.get(i).outVer.get(tOutID)
                toStack = new OutVer(tObjID, tverId, 0, 0, len2,  tVer.x, tVer.y);
+               this.obstacles.get(tObjID).vertices.get(tverId).visited = true;
              }
            }
+         
            
         }
       }
